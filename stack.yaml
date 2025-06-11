@@ -5,7 +5,7 @@ Resources:
   GrpcSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Acesso à porta gRPC 50051
+      GroupDescription: "Access to gRPC port 50051"
       VpcId: vpc-0a1b796084f120d05
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -20,17 +20,23 @@ Resources:
       ImageId: ami-0c02fb55956c7d316
       SecurityGroupIds:
         - !Ref GrpcSecurityGroup
-      KeyName: grpc-key-pair
+      KeyName: atividade
       UserData:
         Fn::Base64: !Sub |
-          #!/bin/bash
-          yum update -y
-          yum install -y python3 git
-          pip3 install grpcio grpcio-tools
-          cd /home/ec2-user
-          git clone https://github.com/LeonardoPS39/atividade-grpc-cloud.git
-          cd atividade-grpc-cloud
-          python3 server.py > log.txt 2>&1 &
+            #!/bin/bash
+            dnf update -y
+            dnf install -y python3 python3-pip git
+
+            # Clona o repositório
+            cd /home/ec2-user
+            git clone https://github.com/tulipin/projeto-distribuida.git
+
+            # Instala dependências gRPC
+            pip3 install grpcio grpcio-tools
+
+            # Executa o servidor em background e redireciona logs
+            cd projeto-distribuida
+            nohup python3 server.py > server.log 2>&1 &
 
 Outputs:
   PublicIP:
