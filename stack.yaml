@@ -6,7 +6,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Acesso à porta gRPC 50051
-      VpcId: !Ref "AWS::EC2::DefaultVPC"
+      VpcId: vpc-0a1b796084f120d05
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 50051
