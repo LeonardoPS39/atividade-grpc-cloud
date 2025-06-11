@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Servidor gRPC simples em EC2
+
+Resources:
+  GrpcSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Acesso à porta gRPC 50051
+      VpcId: !Ref "AWS::EC2::DefaultVPC"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 50051
+          ToPort: 50051
+          CidrIp: 0.0.0.0/0  # Para fins de teste, aceita qualquer IP
+
+  GrpcInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: ami-0c02fb55956c7d316  # Amazon Linux 2 (região us-east-1)
+      SecurityGroupIds:
+        - !Ref GrpcSecurityGroup
+      KeyName: SEU-NOME-DA-CHAVE  # <-- Altere aqui!
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          yum install -y python3 git
+          pip3 install grpcio grpcio-tools
+          cd /home/ec2-user
+          git clone https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git
+          cd SEU_REPOSITORIO
+          python3 server.py > log.txt 2>&1 &
+
+Outputs:
+  PublicIP:
+    Description: IP público da instância EC2
+    Value: !GetAtt GrpcInstance.PublicIp

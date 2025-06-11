@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package hello;
+
+service SaudacaoService {
+  rpc Saudar (Mensagem) returns (Resposta);
+}
+
+message Mensagem {
+  string nome = 1;
+}
+
+message Resposta {
+  string texto = 1;
+}
