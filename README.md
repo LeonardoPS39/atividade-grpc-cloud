@@ -1,5 +1,5 @@
 # Projeto Final - Sistemas Distribuídos (Cesupa)
-
+**Alunos: Leonardo Peixoto e Arthur Cavalleiro.**
 ## 🧠 Objetivo
 Este projeto demonstra uma aplicação distribuída simples baseada em gRPC e AWS, atendendo aos requisitos da disciplina de Sistemas Distribuídos. A aplicação consiste em um servidor gRPC na nuvem (AWS EC2) e um cliente local que se comunica remotamente.
 
