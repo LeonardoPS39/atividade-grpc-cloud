@@ -10,7 +10,7 @@ Este projeto demonstra uma aplicação distribuída simples baseada em gRPC e AW
 - **Python 3.11** – Linguagem de programação.
 
 ## 📂 Estrutura do Repositório
-\`\`\`
+```
 atividade-grpc-cloud/
 ├── protos/
 │   ├── __init__.py
@@ -21,34 +21,34 @@ atividade-grpc-cloud/
 ├── client.py
 ├── requirements.txt
 └── stack.yaml               # Template CloudFormation
-\`\`\`
+```
 
 ## 🚀 Como Executar Localmente
 1. **Clone e instale dependências**:
-   \`\`\`bash
+   ```bash
    git clone <URL-do-repositório>
    cd atividade-grpc-cloud
    pip3 install --upgrade pip
    pip3 install -r requirements.txt
-   \`\`\`
+   ```
 2. **(Opcional) Gere os módulos gRPC** caso não estejam comitados:
-   \`\`\`bash
+   ```bash
    python3 -m grpc_tools.protoc -I=protos \
      --python_out=protos --grpc_python_out=protos \
      protos/hello.proto
-   \`\`\`
+   ```
 3. **Configure o PYTHONPATH** para que o pacote \`protos\` seja encontrado:
-   \`\`\`bash
+   ```bash
    export PYTHONPATH=.
-   \`\`\`
+   ```
 4. **Inicie o servidor** (escutando em 0.0.0.0:50051):
-   \`\`\`bash
+   ```bash
    python3 server.py
-   \`\`\`
+   ```
 5. **Execute o cliente**, passando o IP (ou hostname) do servidor e seu nome:
-   \`\`\`bash
+   ```bash
    python3 client.py <IP_DA_EC2> SeuNome
-   \`\`\`
+   ```
 
 ## ☁️ Subindo na Nuvem (AWS)
 1. Acesse o Console AWS > CloudFormation > Create Stack.
@@ -58,8 +58,9 @@ atividade-grpc-cloud/
 5. Rode o cliente local usando esse IP.
 
 ## ✅ Checklist Final
-- [ ] \`protos/__init__.py\` presente.
+- [ ] `protos/__init__.py` presente.
 - [ ] Deploy finalizou sem erros no CloudFormation.
 - [ ] Porta 50051 liberada no Security Group.
-- [ ] Servidor escutando em \`0.0.0.0\`.
-- [ ] Teste de conexão com \`telnet <IP> 50051\` OK.
+- [ ] Servidor escutando em `0.0.0.0`.
+- [ ] Teste de conexão com `telnet <IP> 50051` OK.
++
