@@ -3,7 +3,8 @@
 import grpc
 import warnings
 
-from protos import hello_pb2 as protos_dot_hello__pb2
+from . import hello_pb2 as hello__pb2
+
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +19,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in protos/hello_pb2_grpc.py depends on'
+        + f' but the generated code in hello_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -36,8 +37,8 @@ class SaudacaoServiceStub(object):
         """
         self.Saudar = channel.unary_unary(
                 '/hello.SaudacaoService/Saudar',
-                request_serializer=protos_dot_hello__pb2.Mensagem.SerializeToString,
-                response_deserializer=protos_dot_hello__pb2.Resposta.FromString,
+                request_serializer=hello__pb2.Mensagem.SerializeToString,
+                response_deserializer=hello__pb2.Resposta.FromString,
                 _registered_method=True)
 
 
@@ -55,8 +56,8 @@ def add_SaudacaoServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Saudar': grpc.unary_unary_rpc_method_handler(
                     servicer.Saudar,
-                    request_deserializer=protos_dot_hello__pb2.Mensagem.FromString,
-                    response_serializer=protos_dot_hello__pb2.Resposta.SerializeToString,
+                    request_deserializer=hello__pb2.Mensagem.FromString,
+                    response_serializer=hello__pb2.Resposta.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -84,8 +85,8 @@ class SaudacaoService(object):
             request,
             target,
             '/hello.SaudacaoService/Saudar',
-            protos_dot_hello__pb2.Mensagem.SerializeToString,
-            protos_dot_hello__pb2.Resposta.FromString,
+            hello__pb2.Mensagem.SerializeToString,
+            hello__pb2.Resposta.FromString,
             options,
             channel_credentials,
             insecure,

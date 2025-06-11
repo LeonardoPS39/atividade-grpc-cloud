@@ -4,7 +4,8 @@ Description: Servidor gRPC em EC2 com Ubuntu 22.04
 Parameters:
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
-    Description: KeyPair para SSH (ex: atividade)
+    Default: "atividade"
+    Description: KeyPair para SSH
 
   RepositoryUrl:
     Type: String
@@ -43,7 +44,7 @@ Resources:
           apt-get update -y
           apt-get install -y python3 python3-pip git
 
-          # clona código e instala dependências
+          # clona codigo e instala dependências
           cd /home/ubuntu
           git clone ${RepositoryUrl} app
           cd app
@@ -56,5 +57,5 @@ Resources:
 
 Outputs:
   PublicIP:
-    Description: IP público da instância EC2
+    Description: IP publico da instância EC2
     Value: !GetAtt GrpcInstance.PublicIp
