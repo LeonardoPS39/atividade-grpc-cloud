@@ -1,15 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from concurrent import futures
 import grpc
 from protos import hello_pb2
 from protos import hello_pb2_grpc
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 class SaudacaoService(hello_pb2_grpc.SaudacaoServiceServicer):
     def Saudar(self, request, context):
-        texto = f"Ola, {request.nome}"
+        texto = "Olá, {}!".format(request.nome)
         return hello_pb2.Resposta(texto=texto)
 
 def serve():

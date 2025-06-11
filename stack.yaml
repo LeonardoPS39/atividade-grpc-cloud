@@ -1,13 +1,26 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Servidor gRPC simples em EC2
+Description: Servidor gRPC em EC2 com Ubuntu 22.04
+
+Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: KeyPair para SSH (ex: atividade)
+
+  RepositoryUrl:
+    Type: String
+    Default: "https://github.com/LeonardoPS39/atividade-grpc-cloud.git"
+    Description: URL do repositório GitHub com server.py
 
 Resources:
   GrpcSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: "Access to gRPC port 50051"
-      VpcId: vpc-0a1b796084f120d05
+      GroupDescription: "Allow SSH and gRPC"
       SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 50051
           ToPort: 50051
@@ -17,26 +30,29 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t3.micro
-      ImageId: ami-0c02fb55956c7d316
+      ImageId: "{{resolve:ssm:/aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ebs-gp2/ami-id}}"
+      KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref GrpcSecurityGroup
-      KeyName: atividade
       UserData:
         Fn::Base64: !Sub |
-            #!/bin/bash
-            dnf update -y
-            dnf install -y python3 python3-pip git
+          #!/bin/bash
+          set -xe
 
-            # Clona o repositório
-            cd /home/ec2-user
-            git clone https://github.com/tulipin/projeto-distribuida.git
+          # atualiza e instala Python, pip e Git
+          apt-get update -y
+          apt-get install -y python3 python3-pip git
 
-            # Instala dependências gRPC
-            pip3 install grpcio grpcio-tools
+          # clona código e instala dependências
+          cd /home/ubuntu
+          git clone ${RepositoryUrl} app
+          cd app
+          pip3 install --upgrade pip
+          pip3 install -r requirements.txt
 
-            # Executa o servidor em background e redireciona logs
-            cd projeto-distribuida
-            nohup python3 server.py > server.log 2>&1 &
+          # inicia servidor gRPC em background
+          nohup python3 server.py > /home/ubuntu/server.log 2>&1 &
+          chown -R ubuntu:ubuntu /home/ubuntu
 
 Outputs:
   PublicIP:
