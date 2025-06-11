@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 class SaudacaoService(hello_pb2_grpc.SaudacaoServiceServicer):
     def Saudar(self, request, context):
-        texto = f"Olá, {request.nome}!"
+        texto = f"Ola, {request.nome}"
         return hello_pb2.Resposta(texto=texto)
 
 def serve():
