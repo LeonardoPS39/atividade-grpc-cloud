@@ -11,16 +11,16 @@ Resources:
         - IpProtocol: tcp
           FromPort: 50051
           ToPort: 50051
-          CidrIp: 0.0.0.0/0  # Para fins de teste, aceita qualquer IP
+          CidrIp: 0.0.0.0/0
 
   GrpcInstance:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t3.micro
-      ImageId: ami-0c02fb55956c7d316  # Amazon Linux 2 (região us-east-1)
+      ImageId: ami-0c02fb55956c7d316
       SecurityGroupIds:
         - !Ref GrpcSecurityGroup
-      KeyName: SEU-NOME-DA-CHAVE  # <-- Altere aqui!
+      KeyName: grpc-key-pair
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -28,8 +28,8 @@ Resources:
           yum install -y python3 git
           pip3 install grpcio grpcio-tools
           cd /home/ec2-user
-          git clone https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git
-          cd SEU_REPOSITORIO
+          git clone https://github.com/LeonardoPS39/atividade-grpc-cloud.git
+          cd atividade-grpc-cloud
           python3 server.py > log.txt 2>&1 &
 
 Outputs:
