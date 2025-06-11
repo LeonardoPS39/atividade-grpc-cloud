@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from concurrent import futures
 import grpc
 from protos import hello_pb2
